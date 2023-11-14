@@ -1,6 +1,9 @@
-import { Product } from './product.model';
-
 import _ from 'lodash';
+
+import 'reflect-metadata';
+import { plainToClass } from 'class-transformer';
+
+import { Product } from './product.model';
 
 declare var GLOBAL: any;
 
@@ -15,5 +18,14 @@ const products = [
   { title: 'A computer', price: 800 },
 ];
 
-const product1 = new Product('book', 12.99);
-console.log(product1.getInformation());
+// manual way to convert API data to class
+
+// const loadedProducts = products.map(product => {
+//   return new Product(product.title, product.price);
+// });
+
+const loadedProducts = plainToClass(Product, products);
+
+for (const product of loadedProducts) {
+  console.log(product.getInformation());
+}
